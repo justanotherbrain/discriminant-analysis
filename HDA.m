@@ -7,3 +7,4 @@ function params = HDA(X,y,lambda)
 % y - labels
 % lambda - regularization parameter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

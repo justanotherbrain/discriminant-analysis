@@ -30,7 +30,7 @@ Q = -.5*(inv(C0)-inv(C1));
 
 m = C0\mu0 - C1\mu1;
 
-k = -0.5*(log(norm(C0)) - log(norm(C1)) + mu0'*inv(C0)*mu0 - mu1'*inv(C1)*mu1);
+k = -0.5*(log(det(C0)) - log(det(C1)) + mu0'*inv(C0)*mu0 - mu1'*inv(C1)*mu1);
 
 params.Q = Q;
 params.m = m;
