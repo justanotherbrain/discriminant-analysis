@@ -16,10 +16,6 @@ end
 
 yhat = zeros(size(X,1),1);
 
-% disp(size(X(1,:)))
-% disp(size(params.Q))
-% disp(size(params.m))
-% disp(size(params.k))
 for i = 1:length(yhat)
     temp = sign(X(i,:)*params.Q*X(i,:)' + params.m'*X(i,:)' + params.k);
 
