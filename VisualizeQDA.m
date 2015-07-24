@@ -55,7 +55,7 @@ else
         subplot(ceil(length(params)/2),2,i)
         hold on
         gscatter(data(:,1),data(:,2),labels,'rb')
-        h = ezplot(f,[-40 40 -15 50]);
+        h = ezplot(f,[min(data(:,1)) max(data(:,1)) min(data(:,2)) max(data(:,2))]);
         h.Color = 'k';
         h.LineWidth = 1;
         xlabel('');
