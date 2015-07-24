@@ -66,29 +66,34 @@ end
 
 %% AdaBoost
 
-D = ones(length(y),1) * 1/length(y);
+% D = ones(length(y),1) * 1/length(y);
+% 
+% yd = y;
+% yd(yd==0)=-1;
+% 
+% if iter > 1
+%     for t = 1:iter
+%         prediction = TestQDA(params{t}, X, [labels(2) labels(1)]);
+%         errors = sum((D .* abs(prediction - y)));
+%         if errors == 0
+%             errors = 0.000000001; % avoid divide by zero
+%         end
+%         alpha = 0.5 * log((1-errors)/errors);
+%         Z = 2 * (errors*(1-errors))^.5;
+% 
+%         for i = 1:length(y)
+%             D(i) = abs((D(i) * exp(-alpha*yd(i)*prediction(i))) / Z);
+%         end
+%         params{t}.alpha = abs(alpha);
+%     end
+% else
+%     params{1}.alpha = 1;
+% end
 
-yd = y;
-yd(yd==0)=-1;
-
-if iter > 1
-    for t = 1:iter
-        prediction = TestQDA(params{t}, X, [labels(2) labels(1)]);
-        errors = sum((D .* abs(prediction - y)));
-        if errors == 0
-            errors = 0.000000001; % avoid divide by zero
-        end
-        alpha = 0.5 * log((1-errors)/errors);
-        Z = 2 * (errors*(1-errors))^.5;
-
-        for i = 1:length(y)
-            D(i) = abs((D(i) * exp(-alpha*yd(i)*prediction(i))) / Z);
-        end
-        params{t}.alpha = abs(alpha);
-    end
-else
-    params{1}.alpha = 1;
-end
+%% Find best combination - go with closest means
+% for t = 1:iter
+%     
+% end
 
 
 

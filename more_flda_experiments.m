@@ -45,8 +45,8 @@ shuffle = randperm(2000);
 % Xb2 = .3*Xb1.^2 + randn(1000,1)*.2;
 % Xb = [Xb1, Xb2];
 % Xb = Xb * [cos(theta2) -sin(theta2); sin(theta2) cos(theta2)];
-% Xb(:,1) = Xb(:,1)+5;
-% Xb(:,2) = Xb(:,2)+5;
+% Xb(:,1) = Xb(:,1)+3;
+% Xb(:,2) = Xb(:,2)+3;
 % 
 % n1 = 4;
 % n2 = 1;
@@ -65,9 +65,9 @@ Xb2 = -.2*Xb1.^3 + .3*Xb1.^2 + randn(1000,1)*.2;
 Xb = [Xb1, Xb2];
 Xb = Xb * [cos(theta2) -sin(theta2); sin(theta2) cos(theta2)];
 Xb(:,1) = Xb(:,1);
-Xb(:,2) = Xb(:,2)+2;
+Xb(:,2) = Xb(:,2)+5;
 
-n1 = 4;
+n1 = 3;
 n2 = 1;
 
 %% Do the rest
@@ -105,7 +105,6 @@ for i = 1:length(N)
     sX = validX(1:N(i),:);
     sY = validY(1:N(i),:);
 
-    
     lda_params = TrainFLDA(sX,sY);
     qda_params = TrainQDA(sX,sY);
     mqda_params = TrainMQDA(sX,sY, n1, n2);
@@ -131,6 +130,7 @@ title('Error rate per number of training samples')
 xlabel('number of samples')
 ylabel('error rate')
 
+disp('==> visualizing')
 VisualizeFLDA(all_lda_params,test.X,test.Y);
 VisualizeQDA(all_qda_params,test.X,test.Y);
 VisualizeMQDA(all_mqda_params,test.X,test.Y);
