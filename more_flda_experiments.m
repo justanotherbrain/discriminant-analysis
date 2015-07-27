@@ -27,13 +27,13 @@ shuffle = randperm(2000);
 % Xb = (randn(1000,2)) * [2 1; 1 3] * [cos(theta2) -sin(theta2); sin(theta2) cos(theta2)] + 10;
 
 %% The LDA is so bad! Surprising, really.
-% % 
-% theta1 = 45; %angle to rotate by
-% theta2 = 0;
 % 
-% Xa = (randn(1000,2)) * [2 1; 1 2] * [cos(theta1) -sin(theta1); sin(theta1) cos(theta1)];
-% Xb = (randn(1000,2)) * [2 1; 1 3] * [cos(theta2) -sin(theta2); sin(theta2) cos(theta2)] + 10;
-% Xb(:,1) = Xb(:,1)-10;
+theta1 = 45; %angle to rotate by
+theta2 = 0;
+
+Xa = (randn(1000,2)) * [2 1; 1 2] * [cos(theta1) -sin(theta1); sin(theta1) cos(theta1)];
+Xb = (randn(1000,2)) * [2 1; 1 3] * [cos(theta2) -sin(theta2); sin(theta2) cos(theta2)] + 4;
+Xb(:,1) = Xb(:,1)-5;
 
 %% Now for something a little more tricky - In this case, the QDA fails, but LDA is standing strong
 % 
@@ -52,23 +52,23 @@ shuffle = randperm(2000);
 % n2 = 1;
 
 %% and something even more tricky
-theta1 = 0;
-theta2 = 90;
-
-Xa1 = randn(1000,1)*.5;
-Xa2 = .2*Xa1.^5 - .2*Xa1.^3 + .1*Xa1.^2 + - .4*Xa1 + rand(1000,1)*.5;
-Xa = [Xa1, Xa2];
-Xa = Xa * [cos(theta1) -sin(theta1); sin(theta1) cos(theta1)];
-
-Xb1 = randn(1000,1);
-Xb2 = -.2*Xb1.^3 + .3*Xb1.^2 + randn(1000,1)*.2;
-Xb = [Xb1, Xb2];
-Xb = Xb * [cos(theta2) -sin(theta2); sin(theta2) cos(theta2)];
-Xb(:,1) = Xb(:,1);
-Xb(:,2) = Xb(:,2)+5;
-
-n1 = 3;
-n2 = 1;
+% theta1 = 0;
+% theta2 = 90;
+% 
+% Xa1 = randn(1000,1)*.5;
+% Xa2 = .2*Xa1.^5 - .2*Xa1.^3 + .1*Xa1.^2 + - .4*Xa1 + rand(1000,1)*.5;
+% Xa = [Xa1, Xa2];
+% Xa = Xa * [cos(theta1) -sin(theta1); sin(theta1) cos(theta1)];
+% 
+% Xb1 = randn(1000,1);
+% Xb2 = -.2*Xb1.^3 + .3*Xb1.^2 + randn(1000,1)*.2;
+% Xb = [Xb1, Xb2];
+% Xb = Xb * [cos(theta2) -sin(theta2); sin(theta2) cos(theta2)];
+% Xb(:,1) = Xb(:,1);
+% Xb(:,2) = Xb(:,2)+1;
+% 
+% n1 = 2;
+% n2 = 1;
 
 %% Do the rest
 
@@ -84,7 +84,7 @@ gscatter(X(:,1),X(:,2),Y,'rb')
 title('Separable')
 
 C = .1;
-N = [100, 150, 200, 250, 300];
+N = [10, 15, 20, 25];
 
 test.X = X(1:length(X)*.1, :); % leave 10% aside for test set
 test.Y = Y(1:length(Y)*.1, :);
@@ -107,7 +107,16 @@ for i = 1:length(N)
 
     lda_params = TrainFLDA(sX,sY);
     qda_params = TrainQDA(sX,sY);
-    mqda_params = TrainMQDA(sX,sY, n1, n2);
+    
+    try
+        mqda_params = TrainMQDA(sX,sY, n1, n2);
+    catch
+        disp(['Could not compute MQDA with ' num2str(n1) ' and ' num2str(n2) ' gaussians'])
+        disp('Reverting to QDA')
+        n1 = 1;
+        n2 = 1;
+        mqda_params = TrainMQDA(sX,sY,n1,n2);
+    end
     
     all_lda_params = [all_lda_params, lda_params];
     all_qda_params = [all_qda_params, qda_params];
@@ -133,7 +142,7 @@ ylabel('error rate')
 disp('==> visualizing')
 VisualizeFLDA(all_lda_params,test.X,test.Y);
 VisualizeQDA(all_qda_params,test.X,test.Y);
-VisualizeMQDA(all_mqda_params,test.X,test.Y);
+% VisualizeMQDA(all_mqda_params,test.X,test.Y);
 
 
 % VisualizeFLDA(all_lda_params,X,Y);
